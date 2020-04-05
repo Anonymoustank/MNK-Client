@@ -16,7 +16,11 @@ enum class BoardWinner {
     NONE, US, THEM, TIE
 }
 
-var problem_column = 0
+class problem_area (var board_part: Int, var x: Int, var y: Int)
+
+var problem_column = problem_area(0, 0, 0)
+
+var problem_row = problem_area(0,0,0)
 
 // An (m,n,k) board - A m x n board where k in a row is a win
 class Board(val m: Int, val n: Int, val k: Int) {
@@ -35,7 +39,8 @@ class Board(val m: Int, val n: Int, val k: Int) {
     // check if a player has won the board
     fun hasWon(player: BoardPlayer): Boolean {
         /* check columns */
-        problem_column = 0
+        problem_column.board_part = 0
+        problem_row.board_part = 0
         for(x in 0 until m) {
             var numCont = 0
             for(y in 0 until n) {
@@ -47,11 +52,13 @@ class Board(val m: Int, val n: Int, val k: Int) {
                 }
                 else {
                     numCont = numCont
+                    problem_column.x = x
+                    problem_column.y = y
                 } 
 
                 if(numCont >= k) return true
-                if(numCont == k-1) {
-                    problem_column = y
+                if(numCont == k-2) {
+                    problem_column.board_part = y
                 }
             }
         }
@@ -59,10 +66,22 @@ class Board(val m: Int, val n: Int, val k: Int) {
         for(y in 0 until n) {
             var numCont = 0
             for(x in 0 until m) {
-                if(contents[x][y] == player) numCont++
-                else numCont = 0
+                if(contents[x][y] == player){
+                    numCont++
+                } 
+                else if (contents[x][y] == BoardPlayer.THEM){
+                    numCont = 0
+                }
+                else {
+                    numCont = numCont
+                    problem_row.x = x
+                    problem_row.y = y
+                } 
 
                 if(numCont >= k) return true
+                if(numCont == k-2) {
+                    problem_row.board_part = x
+                }
             }
         }
         /* check diagonals */
@@ -99,8 +118,13 @@ class Board(val m: Int, val n: Int, val k: Int) {
         
     }
 
-    fun column_check() {
-        println(problem_column)
+    fun column_check(): problem_area {
+        if (problem_column.board_part >= problem_row.board_part){
+            return problem_column.board_part
+        }
+        else {
+            return problem_row.board_part()
+        }
     }
 
     // return a new board with the specified move played
