@@ -20,7 +20,7 @@ class AI {
         // YOU CAN DELETE OR IMPROVE ALL OF THIS CODE
         // get legal moves we can make on the board
         val moves = board.getLegalMoves(BoardPlayer.US)
-
+	println(board.column_check())
         // check for moves that let us win
         for(m in moves) {
             // construct a new board with the move played

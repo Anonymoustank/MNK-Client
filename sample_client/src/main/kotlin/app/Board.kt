@@ -16,6 +16,8 @@ enum class BoardWinner {
     NONE, US, THEM, TIE
 }
 
+var problem_column = 0
+
 // An (m,n,k) board - A m x n board where k in a row is a win
 class Board(val m: Int, val n: Int, val k: Int) {
     // contents is indexed [x][y]
@@ -33,13 +35,24 @@ class Board(val m: Int, val n: Int, val k: Int) {
     // check if a player has won the board
     fun hasWon(player: BoardPlayer): Boolean {
         /* check columns */
+        problem_column = 0
         for(x in 0 until m) {
             var numCont = 0
             for(y in 0 until n) {
-                if(contents[x][y] == player) numCont++
-                else numCont = 0
+                if(contents[x][y] == player){
+                    numCont++
+                } 
+                else if (contents[x][y] == BoardPlayer.THEM){
+                    numCont = 0
+                }
+                else {
+                    numCont = numCont
+                } 
 
                 if(numCont >= k) return true
+                if(numCont == k-1) {
+                    problem_column = y
+                }
             }
         }
         /* check rows */
@@ -83,6 +96,11 @@ class Board(val m: Int, val n: Int, val k: Int) {
         }
 
         return false
+        
+    }
+
+    fun column_check() {
+        println(problem_column)
     }
 
     // return a new board with the specified move played
