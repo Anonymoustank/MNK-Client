@@ -1,0 +1,1 @@
+~/codekata-mnk/sample_client/gradlew run --args="http://localhost:8080 secret0 secret1"
