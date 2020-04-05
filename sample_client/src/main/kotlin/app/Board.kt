@@ -120,10 +120,10 @@ class Board(val m: Int, val n: Int, val k: Int) {
 
     fun column_check(): problem_area {
         if (problem_column.board_part >= problem_row.board_part){
-            return problem_column.board_part
+            return problem_column
         }
         else {
-            return problem_row.board_part()
+            return problem_row
         }
     }
 
